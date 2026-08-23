@@ -1,5 +1,45 @@
 import mongoose from "mongoose";
 
+const educationSchema = new mongoose.Schema(
+  {
+    degree: { type: String, default: "" },
+    year: { type: String, default: "" },
+    gpa: { type: String, default: "" },
+    institution: { type: String, default: "" },
+  },
+  { _id: false },
+);
+
+const linksSchema = new mongoose.Schema(
+  {
+    live: { type: String, default: "" },
+    github: { type: String, default: "" },
+    // add/remove fields to match whatever keys your AI actually returns in `links`
+  },
+  { _id: false },
+);
+
+const projectSchema = new mongoose.Schema(
+  {
+    name: { type: String, default: "" },
+    description: { type: String, default: "" },
+    keyFeatures: { type: [String], default: [] },
+    techStack: { type: [String], default: [] },
+    links: { type: linksSchema, default: () => ({}) },
+  },
+  { _id: false },
+);
+
+const experienceSchema = new mongoose.Schema(
+  {
+    title: { type: String, default: "" },
+    company: { type: String, default: "" },
+    duration: { type: String, default: "" },
+    responsibilities: { type: [String], default: [] },
+  },
+  { _id: false },
+);
+
 const resumeSchema = new mongoose.Schema(
   {
     userId: {
@@ -33,7 +73,7 @@ const resumeSchema = new mongoose.Schema(
       default: "",
     },
     education: {
-      type: [String],
+      type: [educationSchema],
       default: [],
     },
     skills: {
@@ -41,11 +81,11 @@ const resumeSchema = new mongoose.Schema(
       default: [],
     },
     projects: {
-      type: [String],
+      type: [projectSchema],
       default: [],
     },
     experience: {
-      type: [String],
+      type: [experienceSchema],
       default: [],
     },
     strengths: {

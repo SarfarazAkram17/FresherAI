@@ -25,6 +25,7 @@ export const uploadResume = async (req, res) => {
     const aiResponse = await resumeAgent(resumeText);
 
     const resumeData = await JSON.parse(aiResponse);
+    console.log(resumeData);
 
     let resume = await Resume.findOne({ userId });
 
@@ -49,6 +50,7 @@ export const uploadResume = async (req, res) => {
       data: resume,
     });
   } catch (error) {
+    console.log(error)
     if (file) {
       await fs.unlinkSync(file.path);
     }
