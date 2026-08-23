@@ -1,0 +1,134 @@
+services:
+  - type: web
+    name: gateway
+    runtime: docker
+    dockerfilePath: ./backend/gateway/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: FRONTEND_URL
+        fromService: { name: fresherai-sarfaraz, type: web, property: host }
+      - key: AUTH_SERVICE_URL
+        fromService: { name: auth-service, type: web, property: host }
+      - key: RESUME_SERVICE_URL
+        fromService: { name: resume-service, type: web, property: host }
+      - key: INTERVIEW_SERVICE_URL
+        fromService: { name: interview-service, type: web, property: host }
+      - key: ROADMAP_SERVICE_URL
+        fromService: { name: roadmap-service, type: web, property: host }
+      - key: BILLING_SERVICE_URL
+        fromService: { name: billing-service, type: web, property: host }
+      - key: REDIS_URL
+        sync: false
+    plan: free
+
+  - type: web
+    name: auth-service
+    runtime: docker
+    dockerfilePath: ./backend/services/auth/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: PORT
+        value: 8001
+      - key: MONGODB_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_KEY
+        sync: false
+      - key: NODE_ENV
+        value: production
+    plan: free
+
+  - type: web
+    name: resume-service
+    runtime: docker
+    dockerfilePath: ./backend/services/resume/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: PORT
+        value: 8002
+      - key: MONGODB_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+    plan: free
+
+  - type: web
+    name: interview-service
+    runtime: docker
+    dockerfilePath: ./backend/services/interview/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: PORT
+        value: 8003
+      - key: MONGODB_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+    plan: free
+
+  - type: web
+    name: roadmap-service
+    runtime: docker
+    dockerfilePath: ./backend/services/roadmap/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: PORT
+        value: 8004
+      - key: MONGODB_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
+    plan: free
+
+  - type: web
+    name: billing-service
+    runtime: docker
+    dockerfilePath: ./backend/services/billing/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: PORT
+        value: 8005
+      - key: MONGODB_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+    plan: free
+
+  - type: web
+    name: fresherai-sarfaraz
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    rootDir: ./frontend
+    envVars:
+      - key: VITE_SERVER_URL
+        fromService: { name: gateway, type: web, property: host }
+      - key: VITE_FIREBASE_API_KEY
+        sync: false
+      - key: VITE_FIREBASE_AUTH_DOMAIN
+        sync: false
+      - key: VITE_FIREBASE_PROJECT_ID
+        sync: false
+      - key: VITE_FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: VITE_FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: VITE_FIREBASE_APP_ID
+        sync: false
+      - key: VITE_RAZORPAY_KEY_ID
+        sync: false
