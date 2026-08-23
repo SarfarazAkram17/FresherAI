@@ -39,7 +39,7 @@ export const GoogleAuth = async (req, res) => {
     res.cookie("session", sessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: process.env.NODE_ENV === "production" ? "node" : "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -60,7 +60,7 @@ export const logout = async (req, res) => {
     res.clearCookie("session", sessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: process.env.NODE_ENV === "production" ? "node" : "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
     });
 
     return res
@@ -173,13 +173,11 @@ export const addCoins = async (req, res) => {
       7 * 24 * 60 * 60,
     );
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Coins added successfully",
-        interviewCoin: user.interviewCoin,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Coins added successfully",
+      interviewCoin: user.interviewCoin,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
