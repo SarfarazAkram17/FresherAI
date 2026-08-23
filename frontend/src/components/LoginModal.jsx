@@ -19,10 +19,10 @@ const LoginModal = ({ onClose, setUser }) => {
 
       const { data } = await api.post("/api/auth/login", { token });
       setUser(data?.user);
-      setLoading(true);
+      setLoading(false);
       onClose();
     } catch (error) {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
