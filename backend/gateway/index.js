@@ -24,6 +24,10 @@ app.get("/", (req, res) => {
   res.send("hello from gateway");
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
+});
+
 app.use("/api/auth", proxy(process.env.AUTH_SERVICE_URL));
 app.use(
   "/api/resume",

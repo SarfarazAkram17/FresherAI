@@ -15,6 +15,10 @@ app.get("/", (req, res) => {
   res.send("hello from billing service");
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
+});
+
 app.use("/", billingRouter);
 
 app.listen(PORT, () => {

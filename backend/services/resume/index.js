@@ -15,6 +15,10 @@ app.get("/", (req, res) => {
   res.send("hello from resume service");
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
+});
+
 app.use("/", resumeRouter);
 
 app.listen(PORT, () => {

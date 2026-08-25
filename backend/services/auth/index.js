@@ -19,6 +19,10 @@ app.get("/", (req, res) => {
   res.send("hello from auth service");
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
+});
+
 app.listen(PORT, () => {
   console.log(`Auth service started on ${PORT}`);
   connectDB();
